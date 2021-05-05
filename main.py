@@ -2,15 +2,18 @@
 
 # Press ⌃R to execute it or replace it with your code.
 # Press Double ⇧ to search everywhere for classes, files, tool windows, actions, and settings.
+# Import the required modules
+import numpy as np
+import matplotlib.pyplot as plt
+from scipy.integrate import odeint
+
+# Define a function which calculates the derivative
+def dy_dx(y, x):
+    return x - y
+
+xs = np.linspace(0,5,100)
+y0 = 1.0  # the initial condition
+ys = odeint(dy_dx, y0, xs)
+ys = np.array(ys).flatten()
 
 
-def print_hi(name):
-    # Use a breakpoint in the code line below to debug your script.
-    print(f'Hi, {name}')  # Press ⌘F8 to toggle the breakpoint.
-
-
-# Press the green button in the gutter to run the script.
-if __name__ == '__main__':
-    print_hi('PyCharm')
-
-# See PyCharm help at https://www.jetbrains.com/help/pycharm/
