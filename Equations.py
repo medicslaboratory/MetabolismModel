@@ -1,8 +1,9 @@
 import math
 import numpy as np
+import parameter as param
 
 
-def RHSCunnane(y, p):
+def RHSCunnane(y, t):
     """
     Fonction that defines the equations of the metablism.
     :param y
@@ -28,20 +29,27 @@ def RHSCunnane(y, p):
     # y[14]: Lactate concentration in oligodendrocytes
     # y[15]: ATP concentration in oligodendrocytes
 
+    p = param.parameter()
 
     dydt = np.zeros(16)
 
     # Glucose in capillaries
+    # TODO : Ajout sortie de Glucose vers cellules ? (s'il y a lieu)
     dydt[0] = p.digestGlu * p.eatGluSto - p.decayGluBlood * y[0]
 
     # Ketone in capillaries
+    # TODO : Ajout sortie de ketone vers neurone ? (s'il y a lieu)
     dydt[1] = p.digestKet * p.eatKetSto - p.decayKetBlood * y[1]
+
+    # TODO : Lactate dans capillaires ?
 
     # GLUT in the neurons
     # GLUTNeu = p.GLUTNeuBase + (p.GLUTNeuMax - p.GLUTNeuBase) * (p.eatInsul / p.GLUTInsuHalf) / (1 + (p.eatInsul / p.GLUTInsuHalf))
     # ToDo : Revoir si ok... (suppose que tout pareil)
     GLUT = p.GLUTBase + (p.GLUTMax - p.GLUTBase) * (p.eatInsu / p.GLUTInsuHalf) / (1 + (p.eatInsu / p.GLUTInsuHalf))
     GLUTNeu = GLUT
+
+# TODO: BIG!! Ajout pyruvate ?
 
     # Glucose concentration variation in neurons
     # TODO : Ajout entrée de Glucose des Astrocytes (s'il y a lieu)
@@ -50,6 +58,7 @@ def RHSCunnane(y, p):
 
     # Lactate concentration variation in neurons
     # TODO : Revoir entrée de Lactate des Astrocytes
+    # Todo : Entrée lactate des capillaires ?
     fLacNeuToAcCoA = p.VLacMaxNeu * (y[2] / p.KLacHalfNeu) / (1 + (y[2] / p.KLacHalfNeu))
     dydt[3] = p.LacOligToNeuMaxRate * (y[14] / p.LacHalf) / (1 + (y[14] / p.LacHalf)) + p.LacAstToNeu * y[10] - fLacNeuToAcCoA
 
@@ -60,7 +69,7 @@ def RHSCunnane(y, p):
     # Acetyl-CoA par Glu + par Lac + par Ket
     AcetylCoANeu = fGluNeuToAcCoA + fLacNeuToAcCoA + fKetNeuToAcCoA
 
-    fAcetylCoANeu = p.AceCoAMaxRateNeu * (AcetylCoANeu / p.ACoAHalfNeu) / (1 + (AcetylCoANeu / p.ACoAHalfNeu))
+    fAcetylCoANeu = p.ACoAMaxRateNeu * (AcetylCoANeu / p.ACoAHalfNeu) / (1 + (AcetylCoANeu / p.ACoAHalfNeu))
 
     # TODO: Revoir ATP: Ajout 2 ATP (pour Glu -> pyruvate) + 1 ATP (Acetyl-CoA dans TCA)
     # Function for ATP in neurons
@@ -87,7 +96,7 @@ def RHSCunnane(y, p):
     dydt[6] = p.SynGlmate * SynAct - p.GlmateAst * y[6] - p.GlmateOlig * y[6]
 
     # Glutamine concentration variation in astrocytes
-    dydt[7] = p.GlmateAst * y[6] * p.GlmateToGlmineAst - p.GlmineDecay * y[7] - p.GlmineToATP * y[7] - p.GlmineToNeu * y[7]
+    dydt[7] = p.GlmateAst * y[6] * p.GlmateToGlmineAst - p.GlmineDecay * y[7] - p.GlmineToATPAst * y[7] - p.GlmineToNeu * y[7]
 
 
     # y[8]: Glucose concentration in astrocytes
@@ -118,7 +127,7 @@ def RHSCunnane(y, p):
     # Function for ATP in astrocytes (pas sur que bonne fonction...)
     fATPAst = 1 / (1 + math.exp(-(y[11] - p.treshATPAst) / p.tauATPAst))
     # ATP concentration variation in neurons
-    dydt[11] = fATPAst * fPyrToATPAst + p.GlmineToATP * y[7] - p.ATPdecay * y[11]
+    dydt[11] = fATPAst * fPyrToATPAst + p.GlmineToATPAst * y[7] - p.ATPdecay * y[11]
 
 
     # y[12]: Glucose concentration in oligodendrocytes

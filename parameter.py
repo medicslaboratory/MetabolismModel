@@ -13,7 +13,7 @@ class parameter():
         # Parameters for digestion and metabolism in blood
         self.digestKet = 0.01  # (1/min) Speed at which ketones go from stomach to blood
         self.digestGlu = 0.01  # (1/min) Speed at which glucose go from stomach to blood
-        self.decayGluBlood = 0.01  # (1/min) Speed at which glucose disappear from blood (not going to neural cells)
+        self.decayGluBlood = 0.035  # (1/min) Speed at which glucose disappear from blood (not going to neural cells)
         self.decayKetBlood = 0.01  # (1/min) Speed at which ketones disappear from blood (not going to neural cells)
 
         # Parameters for GLUT transporters
@@ -46,7 +46,7 @@ class parameter():
                              # 1.25 mu m gm^-1 min^-1 (source : Pollay, 1980)
         self.KetHalf = 1  # (g/ml)  Concentration of blood Ketone at which flow into neurons is half maximal
                               # 13.90 mM = 13.90 mmol/L = 13.90x10^−3 mol/L (source : Pollay, 1980)
-                              #
+
         self.ATPdecay = 1  # (1/min) Rate of ATP self decay
 
         self.SynBase = 1  # (Hz ?)  Minimal synaptic activity
