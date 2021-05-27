@@ -1,3 +1,5 @@
+# Ne plus utiliser, avant rencontre avec Cunanne (2021-05-25)
+
 class parameter():
     """
     Class defining the parameters of the model.

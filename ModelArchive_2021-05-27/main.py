@@ -1,7 +1,5 @@
 
-# Press ⌃R to execute it or replace it with your code.
-# Press Double ⇧ to search everywhere for classes, files, tool windows, actions, and settings.
-# Import the required modules
+# Ne plus utiliser, avant rencontre avec Cunanne (2021-05-25)
 
 import numpy as np
 import matplotlib.pyplot as plt
@@ -45,3 +43,4 @@ plt.legend(loc='best')
 plt.xlabel('t')
 plt.grid()
 plt.show()
+
