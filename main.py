@@ -12,7 +12,7 @@ import Equations as eq
 
 
 # p = param.parameter()
-
+#blabla
 t = np.linspace(0, 30, 100)  # 100 pts equidistant between 0 and 30.
 
 y0 = np.zeros(16)  # the initial conditions
