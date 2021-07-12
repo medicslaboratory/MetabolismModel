@@ -11,6 +11,7 @@ import Equations as eq
 # import parameter as param
 
 
+
 # p = param.parameter()
 
 t = np.linspace(0, 30, 100)  # 100 pts equidistant between 0 and 30.
